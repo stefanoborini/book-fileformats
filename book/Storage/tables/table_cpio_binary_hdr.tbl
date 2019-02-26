@@ -1,0 +1,15 @@
+Table-ID: cpio-binary-header-format
+Title: cpio binary format header
+
+Offset|Width|Field Name
+0     |2    |magic
+2     |2    |dev
+4     |2    |ino
+6     |2    |mode
+8     |2    |uid
+10    |2    |gid
+12    |2    |nlink
+14    |2    |rdev
+16    |4    |mtime
+20    |2    |namesize
+22    |4    |filesize

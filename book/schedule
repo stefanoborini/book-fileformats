@@ -1,0 +1,19 @@
+gzip        20
+zip         50
+tar         10
+lha         20
+compress    10
+cpio        20
+bzip2       10
+ace         20
+arj         30
+7zip        30
+autopackage 20
+jar         40
+rpm         40
+Storage     40
+            360
+
+
+
+

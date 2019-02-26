@@ -1,0 +1,3 @@
+types are important, if you write a given type on the file, that type must be written everywhere.
+if you just do a mistake and you write a different type, you must solve the ambiguity during read every time.
+

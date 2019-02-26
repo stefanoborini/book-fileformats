@@ -1,0 +1,25 @@
+Table-ID: gnu-tar-header
+Title: GNU tar header format
+
+Offset|Size|Field
+0     |100 |File name
+100   |8   |File mode
+108   |8   |user id
+116   |8   |group id
+124   |12  |File size
+136   |12  |mtime
+148   |8   |Checksum
+156   |1   |link flag
+157   |100 |link name
+257   |8   |magic
+265   |32  |user name
+297   |32  |group name
+329   |8   |device major
+337   |8   |device minor
+345   |12  |access time
+357   |12  |creation time
+369   |12  |offset
+381   |4   |longnames
+386   |4*12|sparse header
+482   |1   |is extended?
+483   |12  |real size

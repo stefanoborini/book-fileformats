@@ -1,0 +1,8 @@
+# Chosen             |   Do-not-use alternatives
+user ID              |   UID,user id
+group ID             |   GID,group id
+checksum             |   check sum,Check sum
+NUL-terminated       |   zero terminated,zero-terminated
+byte order           |   endianness
+NUL                  |   zero,nul,\0
+filename             |   file name

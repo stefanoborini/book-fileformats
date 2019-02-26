@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<chapter id="algorithms" xmlns:xi="http://www.w3.org/2001/XInclude">
+<title>Algorithms</title>
+<sect1>
+<title></title>
+<para></para>
+<remark>
+data structures
+ linked list
+ double linked list
+ trees
+
+keywords : PPM methods
+</remark>
+</sect1>
+
+<sect1>
+<title>Checksumming</title>
+<xi:include href="crc.xml"/>
+</sect1>
+
+<sect1>
+<title>Compression</title>
+<xi:include href="rle.xml"/>
+<xi:include href="packbits.xml"/>
+<xi:include href="arithmetic.xml"/>
+<xi:include href="lempelziv.xml"/>
+<xi:include href="deflate.xml"/>
+<xi:include href="huffman.xml"/>
+<xi:include href="burrows_wheeler.xml"/>
+<xi:include href="move_to_front.xml"/>
+</sect1>
+
+<sect1>
+<title>Encoding</title>
+<!--xi:include href="base64.xml"/-->
+<!--xi:include href="hex.xml"/-->
+</sect1>
+
+</chapter>

@@ -1,0 +1,15 @@
+Table-ID: move-to-front-decoding
+Title: Move to front - decoding
+
+encoded      | L array    |  decoded
+2230320243   | c e n r u  | 
+230320243    | n c e r u  | n           
+30320243     | e n c r u  | ne
+0320243      | r e n c u  | ner
+320243       | r e n c u  | nerr
+20243        | c r e n u  | nerrc
+0243         | e c r n u  | nerrce
+243          | e c r n u  | nerrcee
+43           | r e c n u  | nerrceer
+3            | u r e c n  | nerrceeru
+             | c u r e n  | nerrceeruc            

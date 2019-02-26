@@ -1,0 +1,163 @@
+Tar
+
+{{{
+Further complicating the problem is that some tape drives ignore the
+blocking entirely. For these, a larger record size can still improve
+performance (because the software layers above the tape drive still honor
+the blocking), but not as dramatically as on tape drives that honor
+blocking.
+
+A few users requested that --sparse (-S) be always active by default, I
+think that before replying to them, we have to decide if we want GNU tar to
+go closer to POSIX on average, while producing files. My choice would be to
+go closer to POSIX in the long run. Besides possible double reading, I do
+not see any point of not trying to save files as sparse when creating
+archives which are neither POSIX nor old-V7, so the actual --sparse (-S)
+would become selected by default when producing such archives, whatever the
+reason is. So, --sparse (-S) alone might be redefined to force GNU-format
+archives, and recover its previous meaning from this fact.
+
+While an archive may contain many files, the archive itself is a single
+ordinary file. Like any other file, an archive file can be written to a
+storage device such as a tape or disk, sent through a pipe or over a
+network, saved on the active file system, or even stored in another archive.
+An archive file is not easy to read or manipulate without using the tar
+utility or Tar mode in GNU Emacs.
+
+Archives with blocking factors larger than 20 cannot be read by very old
+versions of tar, or by some newer versions of tar running on old machines
+with small address spaces. With GNU tar, the blocking factor of an archive
+is limited only by the maximum record size of the device containing the
+archive, or by the amount of available virtual memory.
+
+Also, on some systems, not using adequate blocking factors, as sometimes
+imposed by the device drivers, may yield unexpected diagnostics. For
+example, this has been reported:
+
+Cannot write to /dev/dlt: Invalid argument
+
+In such cases, it sometimes happen that the tar bundled by the system is
+aware of block size idiosyncrasies, while GNU tar requires an explicit
+specification for the block size, which it cannot guess. This yields some
+people to consider GNU tar is misbehaving, because by comparison, the bundle
+tar works OK. Adding -b 256, for example, might resolve the problem.
+
+If you use a non-default blocking factor when you create an archive, you
+must specify the same blocking factor when you modify that archive. 
+
+normally. To extract files from an archive with a non-standard blocking
+factor (particularly if you're not sure what the blocking factor is), you
+can usually use the --read-full-records (-B) option while specifying a
+blocking factor larger then the blocking factor of the archive (ie. `tar
+--extract --read-full-records --blocking-factor=300'. See section 2.5 How to
+List Archives, for more information on the --list (-t) operation. See
+section 4.3.1 Options to Help Read Archives, for a more detailed explanation
+of that option.
+
+--blocking-factor=number
+-b number
+    Specifies the blocking factor of an archive. Can be used with any
+operation, but is usually not necessary with --list (-t). 
+
+Device blocking
+
+-b blocks
+--blocking-factor=blocks
+    Set record size to blocks * 512 bytes.
+
+    This option is used to specify a blocking factor for the archive. When
+reading or writing the archive, tar, will do reads and writes of the archive
+in records of block*512 bytes. This is true even when the archive is
+compressed. Some devices requires that all write operations be a multiple of
+a certain size, and so, tar pads the archive out to the next record
+boundary.
+
+    With GNU tar the blocking factor is limited only by the maximum record
+size of the device containing the archive, or by the amount of available
+virtual memory.
+
+    However, deblocking or reblocking is virtually avoided in a special case
+which often occurs in practice, but which requires all the following
+conditions to be simultaneously true:
+
+        * the archive is subject to a compression option,
+        * the archive is not handled through standard input or output, nor
+        * redirected nor piped,
+        * the archive is directly handled to a local disk, instead of any
+        * special device,
+        * --blocking-factor=512-size (-b 512-size) is not explicitely
+        * specified on the tar invocation. 
+
+    In previous versions of GNU tar, the `--compress-block' option (or even
+older: `--block-compress') was necessary to reblock compressed archives. It
+is now a dummy option just asking not to be used, and otherwise ignored. If
+the output goes directly to a local disk, and not through stdout, then the
+last write is not extended to a full record size. Otherwise, reblocking
+occurs. Here are a few other remarks on this topic:
+
+        * gzip will complain about trailing garbage if asked to uncompress a
+        * compressed archive on tape, there is an option to turn the message
+        * off, but it breaks the regularity of simply having to use `prog
+        * -d' for decompression. It would be nice if gzip was silently
+        * ignoring any number of trailing zeros. I'll ask Jean-loup Gailly,
+        * by sending a copy of this message to him.
+
+        * compress does not show this problem, but as Jean-loup pointed out
+        * to Michael, `compress -d' silently adds garbage after the result
+        * of decompression, which tar ignores because it already recognized
+        * its end-of-file indicator. So this bug may be safely ignored.
+
+        * `gzip -d -q' will be silent about the trailing zeros indeed, but
+        * will still return an exit status of 2 which tar reports in turn.
+        * tar might ignore the exit status returned, but I hate doing that,
+        * as it weakens the protection tar offers users against other
+        * possible problems at decompression time. If gzip was silently
+        * skipping trailing zeros and also avoiding setting the exit status
+        * in this innocuous case, that would solve this situation.
+
+        * tar should become more solid at not stopping to read a pipe at the
+        * first null block encountered. This inelegantly breaks the pipe.
+        * tar should rather drain the pipe out before exiting itself. 
+
+So, there is no fixed rule for blocking. But blocking at read time should
+ideally be the same as blocking used at write time. At one place I know,
+with a wide variety of equipment, they found it best to use a blocking of 32
+to guarantee that their tapes are fully interchangeable.
+
+I was also told that, for recycled tapes, prior erasure (by the same drive
+unit that will be used to create the archives) sometimes lowers the error
+rates observed at rewriting time.
+
+Tape blocking
+
+When handling various tapes or cartridges, you have to take care of
+selecting a proper blocking, that is, the number of disk blocks you put
+together as a single tape block on the tape, without intervening tape gaps.
+A tape gap is a small landing area on the tape with no information on it,
+used for decelerating the tape to a full stop, and for later regaining the
+reading or writing speed. When the tape driver starts reading a record, the
+record has to be read whole without stopping, as a tape gap is needed to
+stop the tape motion without loosing information.
+
+Using higher blocking (putting more disk blocks per tape block) will use the
+tape more efficiently as there will be less tape gaps. But reading such
+tapes may be more difficult for the system, as more memory will be required
+to receive at once the whole record. Further, if there is a reading error on
+a huge record, this is less likely that the system will succeed in
+recovering the information. So, blocking should not be too low, nor it
+should be too high. tar uses by default a blocking of 20 for historical
+reasons, and it does not really matter when reading or writing to disk.
+Current tape technology would easily accomodate higher blockings. Sun
+recommends a blocking of 126 for Exabytes and 96 for DATs. We were told that
+for some DLT drives, the blocking should be a multiple of 4Kb, preferably
+64Kb (-b 128) or 256 for decent performance. Other manufacturers may use
+different recommendations for the same tapes. This might also depends of the
+buffering techniques used inside modern tape controllers. Some imposes a
+minimum blocking, or a maximum blocking. Others request blocking to be some
+exponent of two.
+
+@quote-arg
+
+}}}
+
+
