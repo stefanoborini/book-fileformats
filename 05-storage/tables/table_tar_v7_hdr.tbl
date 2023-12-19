@@ -1,0 +1,14 @@
+Table-ID: tar-v7-header
+Title: V7 Header
+
+Offset|Size|Field
+0     |100 |File name
+100   |8   |File mode
+108   |8   |Owner user ID
+116   |8   |Group user ID
+124   |12  |File size in bytes
+136   |12  |Last modification time
+148   |8   |Check sum for header block
+156   |1   |Link indicator
+157   |100 |Name of linked file
+257   |255 |Empty

@@ -1,0 +1,17 @@
+Table-ID: zip-orig-local-file-header-format
+Title: Local file header in original zip format
+
+Offset|Bytes|Field
+0     |4    |Magic signature (0x04034b50)
+4     |2    |Version needed to extract
+6     |2    |General purpose bit flag
+8     |2    |Compression method
+10    |2    |Last modification time
+12    |2    |Last modification date
+14    |4    |CRC-32
+18    |4    |Compressed size
+22    |4    |Uncompressed size
+26    |2    |File name length (fnl)
+28    |2    |Extra field length (efl)
+30    |fnl  |File name (variable size, fnl bytes)
+30+fnl|efl  |Extra field (variable size, efl bytes)

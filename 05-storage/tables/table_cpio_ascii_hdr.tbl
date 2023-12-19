@@ -1,0 +1,15 @@
+Table-ID: cpio-ascii-header-format
+Title: cpio ASCII format header
+
+Offset|Width|Field Name|Meaning
+0     |6    |magic     |magic number 070707
+6     |6    |dev       |device where file is stored
+12    |6    |ino       |inode number
+18    |6    |mode      |file mode
+24    |6    |uid       |owner user ID
+30    |6    |gid       |owner group ID
+36    |6    |nlink     |number of links to file
+42    |6    |rdev      |device major/minor (if special file)
+48    |11   |mtime     |modify time of file
+59    |6    |namesize  |file name length
+65    |11   |filesize  |file length
